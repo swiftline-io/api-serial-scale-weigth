@@ -9,8 +9,11 @@ app.use(methodOverride());
 
 let router = express.Router();
 
+let data = require('./data');
+console.log(data);
+
 router.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.status(200).jsonp(data);
 });
 
 app.use(router);
