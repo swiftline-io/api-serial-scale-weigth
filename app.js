@@ -12,7 +12,7 @@ let router = express.Router();
 let data = require('./data');
 console.log(data);
 
-router.get('/', (req, res) => {
+weigth.get('/weigth', (req, res) => {
   res.status(200).jsonp(data);
 });
 
@@ -20,4 +20,4 @@ app.use(router);
 
 app.listen(3000, () => {
   console.log('Server is runing!');
-})
+});

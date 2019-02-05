@@ -1,13 +1,11 @@
 let _ = require('underscore');
 let scale = require('./example');
 
-
-let status_s = scale.status.slice(1, 4);
-let status_u = scale.status.slice(4, 8);
+let status_s = scale.status.kg.slice(1, 4);
+let status_u = scale.status.kg.slice(4, 8);
 let weigth = scale.weigth;
 
 data(status_s, status_u, weigth);
-
 
 function data( S, U, W) {
 
