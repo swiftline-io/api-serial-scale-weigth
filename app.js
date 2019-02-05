@@ -10,9 +10,8 @@ app.use(methodOverride());
 let router = express.Router();
 
 let data = require('./data');
-console.log(data);
 
-weigth.get('/weigth', (req, res) => {
+router.get('/weigth', (req, res) => {
   res.status(200).jsonp(data);
 });
 
