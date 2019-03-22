@@ -1,184 +1,233 @@
 let _ = require('underscore');
-let scale = require('./example');
 let logger = require('./logging');
 
-let status_s = scale.status.kg.slice(1, 4);
-let status_u = scale.status.kg.slice(4, 8);
-let weigth = scale.weigth;
-
-data(status_s, status_u, weigth);
-
-function data( S, U, W) {
-
+function data(S, U, W) {
+  
   if( _.isEqual([0, 0, 0, 0], U) ) {
+    logger.log({
+      level: 'info',
+      message: 'Normal mode: positive weight'
+    });
 
     if( _.isEqual([0, 1, 0], S) ) {
+      logger.log({
+        level: 'info',
+        message: 'Weight is in Kg'
+      });
       let int = W.slice(0, 3).join('');
       let float = W.slice(3, 5).join('');  
-      return (logger.log({
-        level: 'info',
-        message: result = {
-          'status': "Good",
-          'weigth': parseInt(int) + '.' + parseInt(float) + ' Kg'
-        }
-      }));
+      return {
+        'status': "Good",
+        'weight': parseInt(int) + '.' + parseInt(float) + ' Kg'
+      }
     }
 
     if( _.isEqual([1, 0, 0], S) ) {
-      return (logger.log({
+      logger.log({
         level: 'info',
-        message: result = {
-          'status': "Good",
-         'weigth': parseInt(W.join('')) + ' g' 
-        }
-      }));
+        message: 'Weight is in grams'
+      });
+      let grams = W.join('');
+      return {
+        'status': "Good",
+        'weight': parseInt(grams  ) + ' g' 
+      }
     }
 
     if( _.isEqual([0, 1, 1], S) ) {
-      let lb = W.slice(0, 2).join('');
-      let oz = W.slice(3, 5).join('');
-      let float = W.slice(4).join('');
-      return (logger.log({
+      logger.log({
         level: 'info',
-        message: result = {
-          'status': "Good",
-          'weigth': parseInt(lb) + ' lb, ' + parseInt(oz) + '.' + parseInt(float) + ' oz'
-        }
-      }));      
+        message: 'Weight is in Lb:oz (dec. oz)'
+      });
+      let lb = W.slice(0, 2).join('');
+      let oz = W.slice(2, 4).join('');
+      let float = W.slice(4).join('');
+      return {
+        'status': "Good",
+        'weight': parseInt(lb) + ' lb, ' + parseInt(oz) + '.' + parseInt(float) + ' oz'
+      }      
     }
 
     if( _.isEqual([1, 0, 1], S) ) {
-      
-      if( c[4] === 0 ) {
+      logger.log({
+        level: 'info',
+        message: 'Weight is in Lb:oz (fractional)'
+      });      
+      if( W[4] === 0 ) {        
+        logger.log({
+          level: 'info',
+          message: 'Weight is in Lb:oz'
+        });
         let lb = W.slice(0, 2).join('');
         let oz = W.slice(2, 4).join('');
-        return (logger.log({
-          level: 'info',
-          message: result = {
-            'status': "Good",
-            'weigth': parseInt(lb) + ' lb, ' + parseInt(oz) + ' oz' 
-          } 
-        }));
+        return {
+          'status': "Good",
+          'weight': parseInt(lb) + ' lb, ' + parseInt(oz) + ' oz' 
+        } 
       }
 
-      if( c[4] === 1 ) {
+      if( W[4] === 1 ) {
+        logger.log({
+          level: 'info',
+          message: 'Weight is in Lb:oz (fractional: 1/4)'
+        });
         let lb = W.slice(0, 2).join('');
         let oz = W.slice(2, 4).join('');
-        return (logger.log({
-          level: 'info',
-          message: result = {
-            'status': "Good",
-            'weigth': parseInt(lb) + ' lb, ' + parseInt(oz) + '-1/4 oz' 
-          }
-        }));  
+        return {
+          'status': "Good",
+          'weight': parseInt(lb) + ' lb, ' + parseInt(oz) + '-1/4 oz' 
+        }  
       }
 
-      if( c[4] === 2 ) {
+      if( W[4] === 2 ) {
+        logger.log({
+          level: 'info',
+          message: 'Weight is in Lb:oz (fractional: 1/2)'
+        });
         let lb = W.slice(0, 2).join('');
         let oz = W.slice(2, 4).join('');
-        return (logger.log({
-          level: 'info',
-          message: result = {
-            'status': "Good",
-            'weigth': parseInt(lb) + ' lb, ' + parseInt(oz) + '-1/2 oz' 
-          }
-        })); 
+        return {
+          'status': "Good",
+          'weight': parseInt(lb) + ' lb, ' + parseInt(oz) + '-1/2 oz' 
+        }
       }
 
-      if( c[4] === 3 ) {
+      if( W[4] === 3 ) {
+        logger.log({
+          level: 'info',
+          message: 'Weight is in Lb:oz (fractional: 3/4)'
+        });
         let lb = W.slice(0, 2).join('');
         let oz = W.slice(2, 4).join('');
-        return (logger.log({
-          level: 'info',
-          message: result = {
-            'status': "Good",
-            'weigth': parseInt(lb) + ' lb, ' + parseInt(oz) + '-1/3 oz' 
-          }
-        }));
+        return {
+          'status': "Good",
+          'weight': parseInt(lb) + ' lb, ' + parseInt(oz) + '-3/4 oz' 
+        }
       }
     }
   }
   
   if( _.isEqual([0, 0, 1, 1], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "tArE" 
-      }
-    }));
+      message: 'tArE'
+    });
+    return {
+      'status': "Bad",
+      'value': "tArE" 
+    }
   }
   
   if( _.isEqual([0, 1, 0, 0], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "Lo" 
-      }
-    }));
+      message: 'Lo (low battery)'
+    });
+    return {
+      'status': "Bad",
+      'value': "Lo" 
+    }
   }
 
   if( _.isEqual([0, 1, 0, 1], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "Err" 
-      }
-    }));
+      message: 'Err (overload)'
+    });
+    return {
+      'status': "Bad",
+      'value': "Err" 
+    }
   }
 
   if( _.isEqual([0, 1, 1, 0], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "ErrL" 
-      }
-    }));
+      message: 'ErrL (zero counts too low)'
+    });
+    return {
+      'status': "Bad",
+      'value': "ErrL" 
+    }
   } 
 
   if( _.isEqual([0, 1, 1, 1], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-       'status': "Bad",
-       'value': "----"
-      }
-    }));
+      message: '---- (negative weight, ie < 0.0)'
+    });
+    return {
+      'status': "Bad",
+      'value': "----"
+    }
   }
 
   if( _.isEqual([1, 1, 0, 0], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "8888"
-      }
-    }));
+      message: '8888'
+    });
+    return {
+      'status': "Bad",
+      'value': "8888"
+    }
   }
 
   if( _.isEqual([1, 1, 0, 1], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "Err"
-      }
-    }));
+      message: 'Err (tare error)'
+    });
+    return {
+      'status': "Bad",
+      'value': "Err"
+    }
   }
 
   if( _.isEqual([1, 1, 1, 1], U) ) {
-    return (logger.log({
+    logger.log({
       level: 'info',
-      message: result = {
-        'status': "Bad",
-        'value': "CAL"
-      }
-    }));
+      message: 'CAL (in calibration mode)'
+    });
+    return {
+      'status': "Bad",
+      'value': "CAL"
+    }
+  }
+
+  if( _.isEqual([0, 0, 0, 1], U) ) {
+    logger.log({
+      level: 'info',
+      message: 'Test mode: adjust zero counts'
+    });
+    return {
+     'status': "Test mode",
+     'value': "Adjust zero counts" 
+    }
+  }
+
+  if( _.isEqual([0, 0, 1, 0], U) ) {
+    logger.log({
+      level: 'info',
+      message: 'Calibration mode: adjust SPAN'
+    });
+    return {
+     'status': "Calibration mode",
+     'value': "Adjust SPAN" 
+    }
+  }
+
+  if( _.isEqual([1, 1, 1, 0], U) ) {
+    logger.log({
+      level: 'info',
+      message: 'Calibration mode: Tare'
+    });
+    return {
+     'status': "Calibration mode",
+     'value': "Tare"
+    }
   }
 
 }
 
-exports = module.exports = result;
+exports = module.exports = data;
